@@ -3,9 +3,19 @@
 
 #include <iostream>
 
+extern "C" {
+#include "lua-5.4.4/lua.h"
+#include "lua-5.4.4/lauxlib.h"
+}
+
 int main()
 {
-    std::cout << "Hello World!\n";
+    lua_State* l = luaL_newstate();
+    auto lua_result = luaL_dostring(l, R"(
+        three = 1 + 2
+    )" );
+    std::cout << lua_result << " is returned from luaL_dostring\n";
+    lua_close(l);
 }
 
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu
