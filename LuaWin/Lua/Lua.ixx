@@ -22,4 +22,9 @@ public:
 	{
 		return luaL_dostring(l, s);
 	}
+
+	const char* tops()
+	{
+		return lua_tostring(l, -1);
+	}
 };
