@@ -1,6 +1,11 @@
 #include "pch.h"
 
-TEST(TestCaseName, TestName) {
-  EXPECT_EQ(1, 1);
-  EXPECT_TRUE(true);
+import Lua;
+TEST(LuaTestCase, DosReturnsZero) {
+	Lua lua;
+	const char* s = R"(
+        three = 1 + 2
+    )";
+	EXPECT_EQ(0, lua.dos(s));
+  //EXPECT_TRUE(true);
 }
