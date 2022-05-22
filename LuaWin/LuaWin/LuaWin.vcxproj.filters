@@ -117,6 +117,9 @@
     <ClCompile Include="lua-5.4.4\lzio.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Lua.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="lua-5.4.4\lapi.h">
@@ -201,6 +204,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="lua-5.4.4\lzio.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="LuaInc.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

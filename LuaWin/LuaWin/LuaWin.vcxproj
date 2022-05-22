@@ -119,6 +119,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -133,6 +134,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -175,9 +177,11 @@
     <ClCompile Include="lua-5.4.4\lutf8lib.c" />
     <ClCompile Include="lua-5.4.4\lvm.c" />
     <ClCompile Include="lua-5.4.4\lzio.c" />
+    <ClCompile Include="Lua.ixx" />
     <ClCompile Include="LuaWin.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="LuaInc.h" />
     <ClInclude Include="lua-5.4.4\lapi.h" />
     <ClInclude Include="lua-5.4.4\lauxlib.h" />
     <ClInclude Include="lua-5.4.4\lcode.h" />
