@@ -41,11 +41,29 @@ DWORD LeftMouseClick(int delay)
 	return 0;
 }
 
+DWORD TypeTwo(int delay)
+{
+	INPUT input;
+	memset(&input, 0, sizeof(input));
+	input.type = INPUT_KEYBOARD;
+	input.ki.dwFlags = KEYEVENTF_UNICODE;
+	input.ki.wScan = L'1';
+	UINT n = SendInput(1, &input, sizeof(input));
+	if (n != 1) return 1;
+	Sleep(delay);
+	input.ki.wScan = L'2';
+	//input.mi.dwFlags = KEYEVENTF_KEYUP | KEYEVENTF_UNICODE;
+	n = SendInput(1, &input, sizeof(input));
+	if (n != 1) return 2;
+	return 0;
+
+}
+
 void PrintCursorPosition(int seconds)
 {
 	for (int i = 0; i < seconds; ++i)
 	{
-		Sleep(1000);
+		Sleep(500);
 		POINT p;
 		GetCursorPos(&p);
 		std::cout << "cursor is at " << p.x << ", " << p.y << std::endl;
@@ -73,7 +91,7 @@ TEST(WinTestCase, SendMouseInput)
 
 TEST(WinTestCase, SendKeyboardInput)
 {
-	char path[] = R"(C:\Program Files\internet explorer\iexplore.exe)";
+	char path[] = R"(c:\windows\system32\calc.exe)";
 	char cmd[] = "";
 	STARTUPINFOA info = { sizeof(info) };
 	PROCESS_INFORMATION processInfo;
@@ -84,11 +102,13 @@ TEST(WinTestCase, SendKeyboardInput)
 	if (result)
 	{
 		WaitForSingleObject(processInfo.hProcess, INFINITE);
-		PrintCursorPosition(3);
-		SetCursorPos(580, 160);
+		Sleep(1000);
+		SetCursorPos(100, 80);
+		PrintCursorPosition(4);
 		LeftMouseClick(250);
-		Sleep(3000);
-		SetCursorPos(1014, 132);
+		TypeTwo(1000);
+		SetCursorPos(200, 15);
+		PrintCursorPosition(4);
 		LeftMouseClick(250);
 		CloseHandle(processInfo.hProcess);
 		CloseHandle(processInfo.hThread);
