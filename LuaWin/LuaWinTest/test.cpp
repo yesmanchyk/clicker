@@ -47,11 +47,11 @@ DWORD TypeTwo(int delay)
 	memset(&input, 0, sizeof(input));
 	input.type = INPUT_KEYBOARD;
 	input.ki.dwFlags = KEYEVENTF_UNICODE;
-	input.ki.wScan = L'1';
+	input.ki.wScan = L':';
 	UINT n = SendInput(1, &input, sizeof(input));
 	if (n != 1) return 1;
 	Sleep(delay);
-	input.ki.wScan = L'2';
+	input.ki.wScan = L'\n';
 	//input.mi.dwFlags = KEYEVENTF_KEYUP | KEYEVENTF_UNICODE;
 	n = SendInput(1, &input, sizeof(input));
 	if (n != 1) return 2;
@@ -91,7 +91,7 @@ TEST(WinTestCase, SendMouseInput)
 
 TEST(WinTestCase, SendKeyboardInput)
 {
-	char path[] = R"(c:\windows\system32\calc.exe)";
+	char path[] = R"(c:\windows\system32\notepad.exe)";
 	char cmd[] = "";
 	STARTUPINFOA info = { sizeof(info) };
 	PROCESS_INFORMATION processInfo;
@@ -101,14 +101,16 @@ TEST(WinTestCase, SendKeyboardInput)
 	);
 	if (result)
 	{
-		WaitForSingleObject(processInfo.hProcess, INFINITE);
+		//WaitForSingleObject(processInfo.hProcess, INFINITE);
 		Sleep(1000);
-		SetCursorPos(100, 80);
-		PrintCursorPosition(4);
+		SetCursorPos(50, 80);
+		PrintCursorPosition(2);
 		LeftMouseClick(250);
 		TypeTwo(1000);
-		SetCursorPos(200, 15);
-		PrintCursorPosition(4);
+		SetCursorPos(920, 20);
+		LeftMouseClick(250);
+		SetCursorPos(671, 387);
+		PrintCursorPosition(2);
 		LeftMouseClick(250);
 		CloseHandle(processInfo.hProcess);
 		CloseHandle(processInfo.hThread);
