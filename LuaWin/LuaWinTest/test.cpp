@@ -26,6 +26,32 @@ TEST(LuaTestCase, TopsReturnsSyntaxError) {
 	EXPECT_EQ(e, a);
 }
 
+DWORD LeftMouseClick(int delay)
+{
+	INPUT input;
+	memset(&input, 0, sizeof(input));
+	input.type = INPUT_MOUSE;
+	input.mi.dwFlags = MOUSEEVENTF_LEFTDOWN;
+	UINT n = SendInput(1, &input, sizeof(input));
+	if (n != 1) return input.mi.dwFlags;
+	Sleep(delay);
+	input.mi.dwFlags = MOUSEEVENTF_LEFTUP;
+	n = SendInput(1, &input, sizeof(input));
+	if (n != 1) return input.mi.dwFlags;
+	return 0;
+}
+
+void PrintCursorPosition(int seconds)
+{
+	for (int i = 0; i < seconds; ++i)
+	{
+		Sleep(1000);
+		POINT p;
+		GetCursorPos(&p);
+		std::cout << "cursor is at " << p.x << ", " << p.y << std::endl;
+	}
+}
+
 TEST(WinTestCase, SendMouseInput)
 {
 	std::thread child([]()
@@ -34,23 +60,8 @@ TEST(WinTestCase, SendMouseInput)
 			Sleep(delay);
 			bool result = SetCursorPos(610, 450);
 			std::cout << "SetCursorPos() -> " << result << std::endl;
-			for (int i = 0; i < 3; ++i)
-			{
-				POINT p;
-				GetCursorPos(&p);
-				std::cout << "cursor is at " << p.x << ", " << p.y << std::endl;
-				Sleep(1000);
-			}
-			INPUT input;
-			memset(&input, 0, sizeof(input));
-			input.type = INPUT_MOUSE;
-			input.mi.dwFlags = MOUSEEVENTF_LEFTDOWN;
-			UINT n = SendInput(1, &input, sizeof(input));
-			std::cout << "SendInput() -> " << n << std::endl;
-			Sleep(delay);
-			input.mi.dwFlags = MOUSEEVENTF_LEFTUP;
-			n = SendInput(1, &input, sizeof(input));
-			std::cout << "SendInput() -> " << n << std::endl;
+			PrintCursorPosition(1);
+			LeftMouseClick(delay);
 		});
 	std::cout << "MessageBoxA()" << std::endl;
 	int choice = MessageBoxA(NULL, "Pass test?", "Test", MB_YESNO);
@@ -58,4 +69,29 @@ TEST(WinTestCase, SendMouseInput)
 	child.join();
 	std::cout << "child thread joined" << std::endl;
 	EXPECT_EQ(IDYES, choice);
+}
+
+TEST(WinTestCase, SendKeyboardInput)
+{
+	char path[] = R"(C:\Program Files\internet explorer\iexplore.exe)";
+	char cmd[] = "";
+	STARTUPINFOA info = { sizeof(info) };
+	PROCESS_INFORMATION processInfo;
+	auto result = CreateProcessA(
+		path, cmd, NULL, NULL, TRUE, 0, 
+		NULL, NULL, &info, &processInfo
+	);
+	if (result)
+	{
+		WaitForSingleObject(processInfo.hProcess, INFINITE);
+		PrintCursorPosition(3);
+		SetCursorPos(580, 160);
+		LeftMouseClick(250);
+		Sleep(3000);
+		SetCursorPos(1014, 132);
+		LeftMouseClick(250);
+		CloseHandle(processInfo.hProcess);
+		CloseHandle(processInfo.hThread);
+	}
+	EXPECT_TRUE(result);
 }
