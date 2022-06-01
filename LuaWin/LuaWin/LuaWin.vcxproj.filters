@@ -120,6 +120,9 @@
     <ClCompile Include="Lua\Lua.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Lua\Windows.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Lua\lua-5.4.4\lapi.h">

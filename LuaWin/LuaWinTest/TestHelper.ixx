@@ -5,19 +5,11 @@ module;
 
 export module TestHelper;
 
+import Windows;
+
 export DWORD LeftMouseClick(int delay)
 {
-	INPUT input;
-	memset(&input, 0, sizeof(input));
-	input.type = INPUT_MOUSE;
-	input.mi.dwFlags = MOUSEEVENTF_LEFTDOWN;
-	UINT n = SendInput(1, &input, sizeof(input));
-	if (n != 1) return input.mi.dwFlags;
-	Sleep(delay);
-	input.mi.dwFlags = MOUSEEVENTF_LEFTUP;
-	n = SendInput(1, &input, sizeof(input));
-	if (n != 1) return input.mi.dwFlags;
-	return 0;
+	return Windows::LeftMouseClick(delay);
 }
 
 export DWORD TypeTwo(int delay)

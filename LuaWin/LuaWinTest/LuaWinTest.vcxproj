@@ -99,6 +99,7 @@
     <ClCompile Include="Lua\lua-5.4.4\lvm.c" />
     <ClCompile Include="Lua\lua-5.4.4\lzio.c" />
     <ClCompile Include="Lua\Lua.ixx" />
+    <ClCompile Include="Lua\Windows.ixx" />
     <ClCompile Include="WinTestCase.cpp" />
     <ClCompile Include="test.cpp" />
     <ClCompile Include="pch.cpp">

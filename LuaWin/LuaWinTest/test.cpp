@@ -25,3 +25,14 @@ TEST(LuaTestCase, TopsReturnsSyntaxError) {
 	std::string e = R"([string "..."]:4: 'do' expected near 'a')";
 	EXPECT_EQ(e, a);
 }
+
+TEST(LuaTestCase, WindowTable) {
+	// open standard-sized notepad and move to the top left corner
+	Lua lua;
+	int n = lua.dos(R"(
+			t = find_window("Notepad")
+			t:left(920, 20)
+		)");
+	EXPECT_EQ(0, n);
+	//EXPECT_EQ(std::string(""), lua.tops());
+}

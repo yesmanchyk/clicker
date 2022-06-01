@@ -179,6 +179,7 @@
     <ClCompile Include="Lua\lua-5.4.4\lvm.c" />
     <ClCompile Include="Lua\lua-5.4.4\lzio.c" />
     <ClCompile Include="Lua\Lua.ixx" />
+    <ClCompile Include="Lua\Windows.ixx" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Lua\lua-5.4.4\lapi.h" />
