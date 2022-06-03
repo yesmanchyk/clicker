@@ -1,42 +1,51 @@
 module;
 
 #include <Windows.h>
+#include <functional>
 #include <iostream>
 
 export module TestHelper;
 
 import Windows;
 
-export DWORD LeftMouseClick(int delay)
+export
 {
-	return Windows::LeftMouseClick(delay);
-}
-
-export DWORD TypeTwo(int delay)
-{
-	INPUT input;
-	memset(&input, 0, sizeof(input));
-	input.type = INPUT_KEYBOARD;
-	input.ki.dwFlags = KEYEVENTF_UNICODE;
-	input.ki.wScan = L':';
-	UINT n = SendInput(1, &input, sizeof(input));
-	if (n != 1) return 1;
-	Sleep(delay);
-	input.ki.wScan = L'\n';
-	//input.mi.dwFlags = KEYEVENTF_KEYUP | KEYEVENTF_UNICODE;
-	n = SendInput(1, &input, sizeof(input));
-	if (n != 1) return 2;
-	return 0;
-
-}
-
-export void PrintCursorPosition(int seconds)
-{
-	for (int i = 0; i < seconds; ++i)
+	DWORD LeftMouseClick(int delay)
 	{
-		Sleep(500);
-		POINT p;
-		GetCursorPos(&p);
-		std::cout << "cursor is at " << p.x << ", " << p.y << std::endl;
+		return Windows::LeftMouseClick(delay);
+	}
+
+	void PrintCursorPosition(int seconds)
+	{
+		for (int i = 0; i < seconds; ++i)
+		{
+			Sleep(500);
+			POINT p;
+			GetCursorPos(&p);
+			std::cout << "cursor is at " << p.x << ", " << p.y << std::endl;
+		}
+	}
+
+	bool WithNotepad(std::function<void(const PROCESS_INFORMATION&)> body)
+	{
+		char path[] = R"(c:\windows\system32\notepad.exe)";
+		char cmd[] = "";
+		STARTUPINFOA info = { sizeof(info) };
+		PROCESS_INFORMATION pi;
+		auto result = CreateProcessA(
+			path, cmd, NULL, NULL, TRUE, 0,
+			NULL, NULL, &info, &pi
+		);
+		if (!result) return result;
+		body(pi);
+		CloseHandle(pi.hProcess);
+		CloseHandle(pi.hThread);
+		return result;
+	}
+
+	void CloseNotepad()
+	{
+		SetCursorPos(760, 25);
+		LeftMouseClick(250);
 	}
 }

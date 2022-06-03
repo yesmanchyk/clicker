@@ -7,7 +7,6 @@
 import Windows;
 import TestHelper;
 
-
 /**/
 TEST(WinTestCase, SendMouseInput)
 {
@@ -26,31 +25,6 @@ TEST(WinTestCase, SendMouseInput)
 	child.join();
 	std::cout << "child thread joined" << std::endl;
 	EXPECT_EQ(IDYES, choice);
-}
-
-#include <functional>
-
-bool WithNotepad(std::function<void(const PROCESS_INFORMATION&)> body)
-{
-	char path[] = R"(c:\windows\system32\notepad.exe)";
-	char cmd[] = "";
-	STARTUPINFOA info = { sizeof(info) };
-	PROCESS_INFORMATION pi;
-	auto result = CreateProcessA(
-		path, cmd, NULL, NULL, TRUE, 0,
-		NULL, NULL, &info, &pi
-	);
-	if (!result) return result;
-	body(pi);
-	CloseHandle(pi.hProcess);
-	CloseHandle(pi.hThread);
-	return result;
-}
-
-void CloseNotepad()
-{
-	SetCursorPos(920, 20);
-	LeftMouseClick(250);
 }
 
 TEST(WinTestCase, EnumWindows)
@@ -75,10 +49,10 @@ TEST(WinTestCase, SendKeyboardInput)
 		SetCursorPos(50, 80);
 		PrintCursorPosition(2);
 		LeftMouseClick(250);
-		TypeTwo(1000);
+		Windows::Type("http://www.example.com/?a=1&b=2", 10);
 		CloseNotepad();
 		Sleep(1000);
-		SetCursorPos(671, 387);
+		SetCursorPos(664, 385);
 		PrintCursorPosition(2);
 		LeftMouseClick(250);
 		Sleep(1000);

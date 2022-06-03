@@ -1,9 +1,9 @@
 #include "pch.h"
 #include <string>
 #include <thread>
-#include <Windows.h>
 
 import Lua;
+import TestHelper;
 TEST(LuaTestCase, DosReturnsZero) {
 	Lua lua;
 	const char* s = R"(
@@ -30,9 +30,29 @@ TEST(LuaTestCase, WindowTable) {
 	// open standard-sized notepad and move to the top left corner
 	Lua lua;
 	int n = lua.dos(R"(
-			t = find_window("Notepad")
-			t:left(920, 20)
+			t = find("Notepad")
+			t:left(920, -36)
 		)");
 	EXPECT_EQ(0, n);
 	//EXPECT_EQ(std::string(""), lua.tops());
+}
+
+TEST(LuaTestCase, ClickOverTheWindow) {
+	WithNotepad([](auto& pi) {
+		Lua lua;
+		int n = lua.dos(R"(
+			sleep(500)
+			t = find("Notepad")
+			t:resize(800, 400)
+			sleep(500)
+			type("http://example.com")
+			t:right(10, 10)
+			for i = 1,2 do t:cursor() sleep(500) end
+			t:left(760, -35)
+			for i = 1,2 do t:cursor() sleep(500) end
+			t:left(665, 335)
+		)");
+		//EXPECT_EQ(std::string(""), lua.tops());
+		EXPECT_EQ(0, n);
+	});
 }
